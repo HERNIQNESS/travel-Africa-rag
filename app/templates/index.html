@@ -150,31 +150,30 @@ footer{background:var(--dark);color:rgba(255,255,255,0.5);text-align:center;padd
 <body>
 
 <nav id="nav">
-  <div class="nav-logo">Travel<span>Africa</span></div>
+  <div class="nav-logo">WanderWith<span>Nicole</span></div>
   <div class="nav-links">
     <a href="#features">Explore</a>
     <a href="#hotels">Hotels</a>
     <a href="#plan">Plan Trip</a>
-    <a href="#ask-sec" class="nav-cta">Ask AI ✨</a>
+    <a href="#ask-sec" class="nav-cta">Ask AI </a>
   </div>
 </nav>
 
 <section class="hero">
   <div class="hero-left">
-    <div class="hero-tag">🌍 Kenya & East Africa</div>
-    <h1>Hey explorer,<br>where are we<br>going <em>today?</em></h1>
-    <p class="hero-sub">Discover Kenya & East Africa with hotel recommendations, live travel insights, and expert trip planning — powered by AI.</p>
-    <div class="search-box">
-      <input type="text" id="hero-input" placeholder="6 days in Kenya: safari, coast, culture...">
-      <button onclick="heroAsk()">Ask AI ✨</button>
+    <div class="hero-tag"> Your East Africa travel assistant</div>
+    <h1>Hey wanderer,<br>where would you<br>rather be <em>right now?</em></h1>
+   <p class="hero-sub">East Africa has everything, from safaris, beaches, culture, chaos and a little magic. I help you find the best spots, dodge the scams, and actually enjoy your trip in this great corner of the earth.</p>
+      <input type="text" id="hero-input" placeholder="Tell me where you want to go and I'll handle the rest...">
+      <button onclick="heroAsk()">Ask AI </button>
     </div>
-    <div class="pills">
-      <button class="pill" onclick="quickAsk('Best luxury safari lodges in Maasai Mara')">Plan a safari</button>
-      <button class="pill" onclick="quickAsk('Top things to do in Kenya')">Explore Kenya</button>
-      <button class="pill" onclick="quickAsk('Best beach hotels in Diani for a couple')">Find hotels</button>
-      <button class="pill" onclick="quickAsk('What scams should tourists avoid in Kenya')">Safety tips</button>
-      <button class="pill" onclick="quickAsk('Top attractions in Zanzibar Stone Town')">East Africa</button>
-    </div>
+   <div class="pills">
+  <button class="pill" onclick="quickAsk('Best luxury safari lodges in Maasai Mara')"> Safari vibes</button>
+  <button class="pill" onclick="quickAsk('Top beach hotels in Diani for a couple')"> Beach mode</button>
+  <button class="pill" onclick="quickAsk('What scams should tourists avoid in Kenya')"> Scam alerts</button>
+  <button class="pill" onclick="quickAsk('How do I get around Nairobi safely and cheaply')"> Getting around</button>
+  <button class="pill" onclick="quickAsk('Top things to do in Zanzibar')"> Zanzibar szn</button>
+</div>
   </div>
   <div class="hero-right">
     <div class="collage">
@@ -284,8 +283,8 @@ footer{background:var(--dark);color:rgba(255,255,255,0.5);text-align:center;padd
 </section>
 
 <footer>
-  <div class="f-logo">TravelAfrica</div>
-  <p>AI-powered travel intelligence for Kenya & East Africa</p>
+  <div class="f-logo">WanderWithNicole</div>
+  <p>Your AI travel assistant for Kenya & East Africa avoid scams, avoid stress, and just vibe</p>
   <p style="margin-top:8px;font-size:12px;opacity:0.6">Powered by Groq AI · ChromaDB · FastAPI</p>
 </footer>
 
