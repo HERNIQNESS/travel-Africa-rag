@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel Africa — Kenya & East Africa AI Travel Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#1a5c38;--light-green:#52B788;--dark-green:#0d3320;--orange:#e8712a;--gold:#c9a84c;--cream:#f9f6f0;--dark:#1a1a1a;--text:#2d2d2d;--border:#e0d9ce}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--cream);overflow-x:hidden}
+
+nav{position:fixed;top:0;width:100%;z-index:1000;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s}
+nav.scrolled{background:rgba(249,246,240,0.97);backdrop-filter:blur(10px);box-shadow:0 1px 20px rgba(0,0,0,0.08)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--dark-green)}
+.nav-logo span{color:var(--orange);font-style:italic}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{color:#555;text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s}
+.nav-links a:hover{color:var(--green)}
+.nav-cta{background:var(--dark-green)!important;color:white!important;padding:9px 22px;border-radius:50px;font-weight:600!important}
+
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:0 5rem;gap:4rem;padding-top:80px}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:#e8f5e9;color:var(--green);font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:50px;margin-bottom:1.5rem}
+.hero h1{font-family:'Playfair Display',serif;font-size:3.8rem;line-height:1.1;color:var(--dark);margin-bottom:1.2rem}
+.hero h1 em{color:var(--orange);font-style:italic}
+.hero-sub{font-size:16px;color:#666;line-height:1.7;max-width:420px;margin-bottom:2rem;font-weight:300}
+.search-box{display:flex;background:white;border-radius:16px;border:1.5px solid var(--border);overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);margin-bottom:1.5rem}
+.search-box input{flex:1;border:none;padding:1rem 1.2rem;font-size:15px;font-family:inherit;outline:none;color:var(--dark);background:transparent}
+.search-box input::placeholder{color:#aaa}
+.search-box button{background:var(--dark-green);color:white;border:none;padding:0 1.5rem;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.2s}
+.search-box button:hover{background:var(--green)}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{background:white;border:1.5px solid var(--border);color:#555;padding:7px 16px;border-radius:50px;font-size:13px;cursor:pointer;font-family:inherit;transition:all 0.2s}
+.pill:hover{border-color:var(--green);color:var(--green);background:#f0f7f4}
+
+.hero-right{position:relative;height:580px}
+.collage{position:relative;width:100%;height:100%}
+.img-blob{position:absolute;border-radius:60% 40% 55% 45% / 45% 55% 40% 60%;overflow:hidden;border:4px solid white;box-shadow:0 8px 30px rgba(0,0,0,0.15)}
+.img-blob img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s}
+.img-blob:hover img{transform:scale(1.06)}
+.blob-1{width:280px;height:280px;top:0;right:60px;border-radius:55% 45% 60% 40% / 50% 60% 40% 50%}
+.blob-2{width:220px;height:220px;top:20px;right:320px;border-radius:40% 60% 45% 55% / 60% 40% 55% 45%}
+.blob-3{width:260px;height:260px;bottom:20px;right:40px;border-radius:50% 50% 40% 60% / 45% 55% 60% 40%}
+.blob-4{width:200px;height:200px;bottom:60px;right:280px;border-radius:60% 40% 50% 50% / 40% 60% 45% 55%}
+.float-badge{position:absolute;background:white;border-radius:12px;padding:10px 16px;box-shadow:0 4px 20px rgba(0,0,0,0.12);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--dark);z-index:10}
+.float-badge-1{top:40px;left:0}
+.float-badge-2{bottom:80px;left:20px}
+.badge-icon{font-size:22px}
+.badge-sub{font-size:11px;color:#888;font-weight:400;margin-top:1px}
+
+.stats-bar{background:var(--dark-green);display:flex;justify-content:center;gap:5rem;padding:2rem}
+.stat{text-align:center;color:white}
+.stat-num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);font-weight:700}
+.stat-label{font-size:12px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+
+.answer-wrap{max-width:860px;margin:2.5rem auto;padding:0 2rem;display:none}
+.answer-wrap.show{display:block}
+.answer-card{background:white;border-radius:20px;padding:2rem;box-shadow:0 4px 30px rgba(0,0,0,0.08);border:1px solid var(--border)}
+.answer-head{display:flex;align-items:center;gap:12px;margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.ai-dot{width:42px;height:42px;background:linear-gradient(135deg,var(--dark-green),var(--light-green));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.answer-name{font-size:15px;font-weight:600;color:var(--dark-green)}
+.answer-meta{font-size:12px;color:#999}
+.answer-body{line-height:1.9;font-size:15px;color:var(--text)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+.chips p{font-size:12px;color:#999;width:100%;margin-bottom:4px}
+.chip{background:#f0f7f4;color:var(--green);font-size:12px;padding:4px 12px;border-radius:20px;border:1px solid #c8e6c9}
+.loading-dots{display:flex;gap:6px;align-items:center;padding:0.5rem 0}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--light-green);animation:pulse 1.2s infinite}
+.dot:nth-child(2){animation-delay:0.2s}
+.dot:nth-child(3){animation-delay:0.4s}
+@keyframes pulse{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}
+
+.features{padding:5rem 5rem;background:white}
+.sec-tag{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--orange);font-weight:600;margin-bottom:0.5rem}
+.sec-h{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--dark-green);margin-bottom:0.5rem}
+.sec-p{color:#888;font-size:15px;margin-bottom:3rem}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.feat{background:var(--cream);border-radius:16px;padding:1.8rem;border:1px solid var(--border);transition:all 0.2s;cursor:default}
+.feat:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,0.08);border-color:var(--light-green)}
+.feat-icon{font-size:2rem;margin-bottom:1rem}
+.feat h3{font-size:15px;font-weight:600;color:var(--dark-green);margin-bottom:0.4rem}
+.feat p{font-size:13px;color:#888;line-height:1.6}
+
+.hotels-sec{padding:5rem 5rem;background:var(--cream)}
+.filter-bar{display:flex;gap:10px;margin-bottom:2.5rem}
+.filter-bar input{flex:1;padding:11px 18px;border:1.5px solid var(--border);border-radius:50px;font-size:14px;font-family:inherit;outline:none;background:white}
+.filter-bar input:focus{border-color:var(--green)}
+.filter-bar button{background:var(--dark-green);color:white;border:none;padding:11px 24px;border-radius:50px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:500}
+.filter-bar .btn-outline{background:white;color:var(--green);border:1.5px solid var(--green)}
+.h-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+.h-card{background:white;border-radius:16px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:all 0.2s}
+.h-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.12)}
+.h-img{height:190px;overflow:hidden;position:relative}
+.h-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s}
+.h-card:hover .h-img img{transform:scale(1.08)}
+.h-img-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,0.25))}
+.h-body{padding:1.2rem}
+.h-cat{font-size:10px;text-transform:uppercase;color:var(--orange);font-weight:700;letter-spacing:1.5px;margin-bottom:4px}
+.h-name{font-size:15px;font-weight:600;color:var(--dark);margin-bottom:5px;line-height:1.3}
+.h-loc{font-size:12px;color:#888;margin-bottom:8px}
+.h-foot{display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid var(--border)}
+.h-price{font-size:12px;color:var(--green);font-weight:600}
+.h-rating{color:#c9a84c;font-size:13px;font-weight:500}
+
+.plan-sec{padding:5rem 5rem;background:linear-gradient(135deg,#0d3320,#1a5c38)}
+.plan-sec .sec-h{color:white}
+.plan-sec .sec-p{color:rgba(255,255,255,0.6)}
+.plan-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:2.5rem;max-width:680px}
+.p-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.p-group label{display:block;font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:5px;font-weight:500}
+.p-group input,.p-group select{width:100%;padding:11px 14px;border:1px solid rgba(255,255,255,0.2);border-radius:10px;font-size:14px;font-family:inherit;background:rgba(255,255,255,0.08);color:white;outline:none}
+.p-group input::placeholder{color:rgba(255,255,255,0.35)}
+.p-group select option{background:#1a5c38;color:white}
+.p-group input:focus,.p-group select:focus{border-color:var(--gold)}
+.p-btn{width:100%;background:var(--gold);color:var(--dark);border:none;padding:13px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:1rem;transition:background 0.2s}
+.p-btn:hover{background:#b8973a}
+.p-btn:disabled{opacity:0.6;cursor:not-allowed}
+.itin-box{background:white;border-radius:16px;padding:2rem;margin-top:2rem;max-width:680px;line-height:1.9;font-size:15px;display:none}
+.itin-box.show{display:block}
+
+.ask-sec{padding:5rem 5rem;background:white;text-align:center}
+.ask-inner{max-width:640px;margin:0 auto}
+.ask-bar{display:flex;background:var(--cream);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;margin-top:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.06)}
+.ask-bar input{flex:1;border:none;padding:1.1rem 1.5rem;font-size:15px;font-family:inherit;outline:none;background:transparent;color:var(--dark)}
+.ask-bar button{background:var(--dark-green);color:white;border:none;padding:0 2rem;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.ask-bar button:hover{background:var(--green)}
+
+footer{background:var(--dark);color:rgba(255,255,255,0.5);text-align:center;padding:3rem}
+.f-logo{font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);margin-bottom:0.5rem}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding:6rem 1.5rem 3rem}
+  .hero-right{height:320px}
+  .blob-1{width:170px;height:170px;top:0;right:10px}
+  .blob-2{width:140px;height:140px;top:10px;right:175px}
+  .blob-3{width:160px;height:160px;bottom:0;right:0}
+  .blob-4{width:130px;height:130px;bottom:20px;right:160px}
+  .float-badge{display:none}
+  .hero h1{font-size:2.6rem}
+  .feat-grid{grid-template-columns:1fr 1fr}
+  .features,.hotels-sec,.plan-sec,.ask-sec{padding:3rem 1.5rem}
+  .stats-bar{gap:2rem;flex-wrap:wrap}
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  .p-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-logo">Travel<span>Africa</span></div>
+  <div class="nav-links">
+    <a href="#features">Explore</a>
+    <a href="#hotels">Hotels</a>
+    <a href="#plan">Plan Trip</a>
+    <a href="#ask-sec" class="nav-cta">Ask AI ✨</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">🌍 Kenya & East Africa</div>
+    <h1>Hey explorer,<br>where are we<br>going <em>today?</em></h1>
+    <p class="hero-sub">Discover Kenya & East Africa with hotel recommendations, live travel insights, and expert trip planning — powered by AI.</p>
+    <div class="search-box">
+      <input type="text" id="hero-input" placeholder="6 days in Kenya: safari, coast, culture...">
+      <button onclick="heroAsk()">Ask AI ✨</button>
+    </div>
+    <div class="pills">
+      <button class="pill" onclick="quickAsk('Best luxury safari lodges in Maasai Mara')">Plan a safari</button>
+      <button class="pill" onclick="quickAsk('Top things to do in Kenya')">Explore Kenya</button>
+      <button class="pill" onclick="quickAsk('Best beach hotels in Diani for a couple')">Find hotels</button>
+      <button class="pill" onclick="quickAsk('What scams should tourists avoid in Kenya')">Safety tips</button>
+      <button class="pill" onclick="quickAsk('Top attractions in Zanzibar Stone Town')">East Africa</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="collage">
+      <div class="img-blob blob-1">
+        <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=500&q=80" alt="Elephants on safari">
+      </div>
+      <div class="img-blob blob-2">
+        <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=500&q=80" alt="Zanzibar beach">
+      </div>
+      <div class="img-blob blob-3">
+        <img src="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=500&q=80" alt="Nairobi">
+      </div>
+      <div class="img-blob blob-4">
+        <img src="https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=500&q=80" alt="Diani beach">
+      </div>
+      <div class="float-badge float-badge-1">
+        <div class="badge-icon">🦁</div>
+        <div><div>Maasai Mara</div><div class="badge-sub">Great Migration Season</div></div>
+      </div>
+      <div class="float-badge float-badge-2">
+        <div class="badge-icon">⭐</div>
+        <div><div>95+ Hotels</div><div class="badge-sub">Across East Africa</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">95+</div><div class="stat-label">Hotels</div></div>
+  <div class="stat"><div class="stat-num">15+</div><div class="stat-label">Destinations</div></div>
+  <div class="stat"><div class="stat-num">5</div><div class="stat-label">Countries</div></div>
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">AI Assistant</div></div>
+</div>
+
+<div class="answer-wrap" id="answer-wrap">
+  <div class="answer-card">
+    <div class="answer-head">
+      <div class="ai-dot">🌍</div>
+      <div>
+        <div class="answer-name">Travel Africa AI</div>
+        <div class="answer-meta">Powered by real destination data</div>
+      </div>
+    </div>
+    <div class="answer-body" id="answer-body"></div>
+    <div class="chips" id="chips"></div>
+  </div>
+</div>
+
+<section class="features" id="features">
+  <p class="sec-tag">What We Offer</p>
+  <h2 class="sec-h">Everything for your East Africa adventure</h2>
+  <p class="sec-p">From first search to final destination — your AI travel companion has every detail covered</p>
+  <div class="feat-grid">
+    <div class="feat"><div class="feat-icon">🏨</div><h3>Hotel Discovery</h3><p>95+ handpicked hotels from boutique guesthouses to ultra-luxury safari lodges across Kenya, Tanzania and Uganda</p></div>
+    <div class="feat"><div class="feat-icon">🗺️</div><h3>Trip Planning</h3><p>Personalised day-by-day itineraries built precisely around your interests, travel style and budget</p></div>
+    <div class="feat"><div class="feat-icon">🚗</div><h3>Getting Around</h3><p>Uber, Bolt, matatus, boda bodas and ferry routes clearly explained for every city and destination</p></div>
+    <div class="feat"><div class="feat-icon">🛡️</div><h3>Stay Safe</h3><p>Real scam warnings and insider safety tips so you travel confidently and without unwanted surprises</p></div>
+    <div class="feat"><div class="feat-icon">🌿</div><h3>Wildlife & Attractions</h3><p>National parks, beaches, historical sites and hidden gems with opening hours and practical tips</p></div>
+    <div class="feat"><div class="feat-icon">🛍️</div><h3>Shopping & Dining</h3><p>The best malls, local markets and dining spots in every city with insider recommendations</p></div>
+  </div>
+</section>
+
+<section class="hotels-sec" id="hotels">
+  <p class="sec-tag">Accommodation</p>
+  <h2 class="sec-h">Browse hotels across East Africa</h2>
+  <p class="sec-p">Click any hotel to ask the AI for a full breakdown — amenities, pricing and who it is best for</p>
+  <div class="filter-bar">
+    <input type="text" id="loc-input" placeholder="Search by city — Nairobi, Diani, Zanzibar, Mombasa, Arusha...">
+    <button onclick="filterHotels()">Search</button>
+    <button class="btn-outline" onclick="loadAll()">All Hotels</button>
+  </div>
+  <div class="h-grid" id="h-grid"></div>
+</section>
+
+<section class="plan-sec" id="plan">
+  <p class="sec-tag" style="color:var(--gold)">AI Itinerary Builder</p>
+  <h2 class="sec-h">Plan my perfect trip</h2>
+  <p class="sec-p">Tell us where you want to go and we will build your complete itinerary</p>
+  <div class="plan-card">
+    <div class="p-grid">
+      <div class="p-group"><label>Destination</label><input type="text" id="p-dest" placeholder="Nairobi, Diani, Zanzibar..."></div>
+      <div class="p-group"><label>Duration (days)</label><input type="number" id="p-days" value="5" min="1" max="30"></div>
+      <div class="p-group"><label>Interests</label><input type="text" id="p-interests" placeholder="safari, beach, culture, hiking..."></div>
+      <div class="p-group"><label>Budget</label>
+        <select id="p-budget">
+          <option value="budget">Budget — Under $50 per night</option>
+          <option value="mid-range" selected>Mid-range — $50 to $150 per night</option>
+          <option value="luxury">Luxury — $150 and above per night</option>
+        </select>
+      </div>
+    </div>
+    <button class="p-btn" id="p-btn" onclick="planTrip()">✨ Generate My Itinerary</button>
+  </div>
+  <div class="itin-box" id="itin-box"></div>
+</section>
+
+<section class="ask-sec" id="ask-sec">
+  <div class="ask-inner">
+    <p class="sec-tag">AI Assistant</p>
+    <h2 class="sec-h">Ask anything about East Africa</h2>
+    <p class="sec-p">Hotels, transport, safety, attractions — our AI has real answers</p>
+    <div class="ask-bar">
+      <input type="text" id="ask-input" placeholder="What is the best way to see the Great Migration?">
+      <button onclick="askFromBar()">Ask AI ✨</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">TravelAfrica</div>
+  <p>AI-powered travel intelligence for Kenya & East Africa</p>
+  <p style="margin-top:8px;font-size:12px;opacity:0.6">Powered by Groq AI · ChromaDB · FastAPI</p>
+</footer>
+
+<script>
+const API = window.location.origin;
+
+const HOTEL_IMAGES = {
+  'Nairobi':[
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80',
+    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80',
+    'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600&q=80',
+    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80',
+    'https://images.unsplash.com/photo-1587213811864-c8e22f41e367?w=600&q=80',
+  ],
+  'Diani':[
+    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80',
+    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80',
+    'https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=600&q=80',
+    'https://images.unsplash.com/photo-1549294413-26f195200c16?w=600&q=80',
+    'https://images.unsplash.com/photo-1602002418082-a4443e081dd1?w=600&q=80',
+  ],
+  'Mombasa':[
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80',
+    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80',
+    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80',
+    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80',
+    'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600&q=80',
+  ],
+  'Maasai Mara':[
+    'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80',
+    'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80',
+    'https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=600&q=80',
+    'https://images.unsplash.com/photo-1484406566174-9da000fda645?w=600&q=80',
+    'https://images.unsplash.com/photo-1612892483236-52d32a0e0ac1?w=600&q=80',
+  ],
+  'Zanzibar':[
+    'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=600&q=80',
+    'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&q=80',
+    'https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80',
+    'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=600&q=80',
+    'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=600&q=80',
+  ],
+  'Amboseli':[
+    'https://images.unsplash.com/photo-1612892483236-52d32a0e0ac1?w=600&q=80',
+    'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80',
+    'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80',
+    'https://images.unsplash.com/photo-1484406566174-9da000fda645?w=600&q=80',
+    'https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=600&q=80',
+  ],
+  'Naivasha':[
+    'https://images.unsplash.com/photo-1531971589569-0d9370cbe1e5?w=600&q=80',
+    'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600&q=80',
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80',
+    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80',
+    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80',
+  ],
+  'Nakuru':[
+    'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80',
+    'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80',
+    'https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=600&q=80',
+    'https://images.unsplash.com/photo-1484406566174-9da000fda645?w=600&q=80',
+    'https://images.unsplash.com/photo-1612892483236-52d32a0e0ac1?w=600&q=80',
+  ],
+  'Nanyuki':[
+    'https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=600&q=80',
+    'https://images.unsplash.com/photo-1531971589569-0d9370cbe1e5?w=600&q=80',
+    'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80',
+    'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80',
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80',
+  ],
+  'Watamu':[
+    'https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80',
+    'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=600&q=80',
+    'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=600&q=80',
+    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80',
+    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80',
+  ],
+  'Lamu':[
+    'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=600&q=80',
+    'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=600&q=80',
+    'https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80',
+    'https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=600&q=80',
+    'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&q=80',
+  ],
+  'Arusha':[
+    'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=600&q=80',
+    'https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=600&q=80',
+    'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&q=80',
+    'https://images.unsplash.com/photo-1484406566174-9da000fda645?w=600&q=80',
+    'https://images.unsplash.com/photo-1612892483236-52d32a0e0ac1?w=600&q=80',
+  ],
+  'Kampala':[
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80',
+    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80',
+    'https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=600&q=80',
+    'https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=600&q=80',
+    'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80',
+  ],
+  'Dar es Salaam':[
+    'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=600&q=80',
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80',
+    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80',
+    'https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=600&q=80',
+    'https://images.unsplash.com/photo-1539635278303-d4002c07eae3?w=600&q=80',
+  ],
+  'default':[
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80',
+    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80',
+    'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80',
+    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80',
+    'https://images.unsplash.com/photo-1531971589569-0d9370cbe1e5?w=600&q=80',
+  ]
+};
+
+let imgCounters = {};
+function getImg(loc){
+  const pool = HOTEL_IMAGES[loc]||HOTEL_IMAGES['default'];
+  if(!imgCounters[loc])imgCounters[loc]=0;
+  return pool[imgCounters[loc]++%pool.length];
+}
+
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>50));
+
+function heroAsk(){const q=document.getElementById('hero-input').value.trim();if(q)ask(q);}
+function askFromBar(){const q=document.getElementById('ask-input').value.trim();if(q)ask(q);}
+function quickAsk(q){document.getElementById('hero-input').value=q;ask(q);}
+
+async function ask(q){
+  const wrap=document.getElementById('answer-wrap');
+  const body=document.getElementById('answer-body');
+  const chips=document.getElementById('chips');
+  wrap.className='answer-wrap show';
+  body.innerHTML='<div class="loading-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span style="margin-left:10px;color:#999;font-size:14px">Finding the best answer for you...</span></div>';
+  chips.innerHTML='';
+  wrap.scrollIntoView({behavior:'smooth',block:'center'});
+  try{
+    const res=await fetch(`${API}/ask`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});
+    const data=await res.json();
+    body.innerHTML=data.answer.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+    chips.innerHTML='<p>Sources used:</p>'+data.sources.map(s=>`<span class="chip">📌 ${s.name} · ${s.location}</span>`).join('');
+  }catch(e){
+    body.innerHTML='<span style="color:#c0392b">Could not connect to the server. Please ensure the API is running.</span>';
+  }
+}
+
+async function loadAll(){
+  document.getElementById('loc-input').value='';
+  const res=await fetch(`${API}/hotels`);
+  render(await res.json());
+}
+
+async function filterHotels(){
+  const loc=document.getElementById('loc-input').value.trim();
+  if(!loc){loadAll();return;}
+  const res=await fetch(`${API}/hotels/${loc}`);
+  render(await res.json());
+}
+
+function render(data){
+  imgCounters={};
+  const g=document.getElementById('h-grid');
+  if(!data.length){
+    g.innerHTML='<p style="color:#888;padding:2rem;grid-column:1/-1">No hotels found for that location. Try Nairobi, Diani, Zanzibar, Mombasa or Arusha.</p>';
+    return;
+  }
+  g.innerHTML=data.map(h=>`
+    <div class="h-card" onclick="quickAsk('Tell me about ${h.hotel_name} in ${h.location}. What makes it special, who is it ideal for, and what are the key amenities and price range?')">
+      <div class="h-img">
+        <img src="${getImg(h.location)}" alt="${h.hotel_name}" loading="lazy">
+        <div class="h-img-overlay"></div>
+      </div>
+      <div class="h-body">
+        <div class="h-cat">${h.category}</div>
+        <div class="h-name">${h.hotel_name}</div>
+        <div class="h-loc">📍 ${h.location}, ${h.country}</div>
+        <div class="h-foot">
+          <span class="h-price">${h.price_range}</span>
+          <span class="h-rating">★ ${h.rating}</span>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+async function planTrip(){
+  const btn=document.getElementById('p-btn');
+  const box=document.getElementById('itin-box');
+  btn.disabled=true;btn.textContent='Planning your adventure...';
+  box.className='itin-box';
+  try{
+    const res=await fetch(`${API}/plan-trip`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      destination:document.getElementById('p-dest').value,
+      duration_days:parseInt(document.getElementById('p-days').value),
+      interests:document.getElementById('p-interests').value,
+      budget:document.getElementById('p-budget').value
+    })});
+    const data=await res.json();
+    box.innerHTML=data.itinerary.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+    box.className='itin-box show';
+    box.scrollIntoView({behavior:'smooth'});
+  }catch(e){
+    box.innerHTML='<span style="color:#c0392b">Error generating itinerary. Please try again.</span>';
+    box.className='itin-box show';
+  }
+  btn.disabled=false;btn.textContent='✨ Generate My Itinerary';
+}
+
+document.getElementById('hero-input').addEventListener('keypress',e=>{if(e.key==='Enter')heroAsk();});
+document.getElementById('ask-input').addEventListener('keypress',e=>{if(e.key==='Enter')askFromBar();});
+document.getElementById('loc-input').addEventListener('keypress',e=>{if(e.key==='Enter')filterHotels();});
+
+loadAll();
+</script>
+</body>
+</html>
