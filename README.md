@@ -1,5 +1,5 @@
 # WanderWithNicole — AI Travel Assistant
-![WanderWithNicole](screenshot.png)
+![WanderWithNicole](Screenshot.png)
 > Your AI travel bestie for Kenya & East Africa. Helps you experience East Africa stress free, especially when it comes to avoiding scams and getting robbed which can tank your vacation experience in general.
 > Guiding thought for me was what would I want from an assistant if I was to travel to a whole new area, and I came up with the kind of data that would help build that. Below is a little more about what went into it and how you can also follow the same to build your own assistant.
 > Built by **Nicole Onyango** · Powered by Groq AI & FastAPI
