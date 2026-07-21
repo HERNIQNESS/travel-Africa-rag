@@ -6,8 +6,6 @@
 
 **Live demo:** https://wanderwithnicole-mr4y.onrender.com
 
----
-
 ## What it does
 
 WanderWithNicole is a RAG-powered travel assistant that helps you discover hotels, plan trips, navigate cities and avoid scams across Kenya and East Africa.
